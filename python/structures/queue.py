@@ -10,7 +10,7 @@ Implements a queue data structure using a linked list.
 import unittest
 
 
-class Queue:
+class Queue(object):
     def __init__(self):
         self._first = None
         self._last = None
@@ -46,7 +46,7 @@ class Queue:
         else:
             raise IndexError('dequeue from empty queue')
 
-    class _Node:
+    class _Node(object):
         def __init__(self, value):
             self.value = value
             self.next = None

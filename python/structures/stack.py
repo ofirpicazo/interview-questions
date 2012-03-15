@@ -10,7 +10,7 @@ Implements a stack data structure using a linked list.
 import unittest
 
 
-class Stack:
+class Stack(object):
     def __init__(self):
         self._last = None
         self._count = 0
@@ -41,7 +41,7 @@ class Stack:
         else:
             raise IndexError('pop from empty stack')
 
-    class _Node:
+    class _Node(object):
         def __init__(self, value):
             self.value = value
             self.next = None
