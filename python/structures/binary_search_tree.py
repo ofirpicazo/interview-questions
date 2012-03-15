@@ -29,6 +29,23 @@ class BinarySearchTree(object):
             return False
         return True
 
+    def dot_syntax(self):
+        sequence = []
+        if self.root:
+            sequence = ['%s;' % self.root.key]
+            sequence = self._get_node_dot_syntax(self.root)
+        return 'digraph G { graph [ordering="out"]; %s }' % ' '.join(sequence)
+
+    def _get_node_dot_syntax(self, node):
+        sequence = []
+        if node.left:
+            sequence.append('%s -> %s;' % (node.key, node.left.key))
+            sequence.extend(self._get_node_dot_syntax(node.left))
+        if node.right:
+            sequence.append('%s -> %s;' % (node.key, node.right.key))
+            sequence.extend(self._get_node_dot_syntax(node.right))
+        return sequence
+
     def _find(self, key, node):
         if key == node.key:
             return node.value
@@ -137,6 +154,10 @@ class BinarySearchTreeTests(unittest.TestCase):
     def test_in_operator(self):
         self.assertTrue(20 in self.tree)
         self.assertTrue(50 not in self.tree)
+
+    def test_dot_syntax(self):
+        output = 'digraph G { graph [ordering="out"]; 10 -> 6; 6 -> 5; 6 -> 7; 7 -> 8; 8 -> 9; 10 -> 11; 11 -> 20; 20 -> 16; }'
+        self.assertTrue(output, self.tree.dot_syntax())
 
 if __name__ == '__main__':
     unittest.main()
