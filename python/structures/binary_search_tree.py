@@ -12,12 +12,12 @@ import unittest
 
 class BinarySearchTree(object):
     def __init__(self):
-        self.root = None
+        self._root = None
 
     def __getitem__(self, key):
         """Allows the x[key] syntax for retrieving elements."""
-        if self.root:
-            return self._find(key, self.root)
+        if self._root:
+            return self._find(key, self._root)
         else:
             raise KeyError(key)
 
@@ -31,9 +31,9 @@ class BinarySearchTree(object):
 
     def dot_syntax(self):
         sequence = []
-        if self.root:
-            sequence = ['%s;' % self.root.key]
-            sequence = self._get_node_dot_syntax(self.root)
+        if self._root:
+            sequence = ['%s;' % self._root.key]
+            sequence = self._get_node_dot_syntax(self._root)
         return 'digraph G { graph [ordering="out"]; %s }' % ' '.join(sequence)
 
     def _get_node_dot_syntax(self, node):
@@ -57,8 +57,8 @@ class BinarySearchTree(object):
             raise KeyError(key)
 
     def pre_order(self):
-        if self.root:
-            return self._pre_order(self.root)
+        if self._root:
+            return self._pre_order(self._root)
         else:
             return []
 
@@ -71,8 +71,8 @@ class BinarySearchTree(object):
         return sequence
 
     def in_order(self):
-        if self.root:
-            return self._in_order(self.root)
+        if self._root:
+            return self._in_order(self._root)
         else:
             return []
 
@@ -86,8 +86,8 @@ class BinarySearchTree(object):
         return sequence
 
     def post_order(self):
-        if self.root:
-            return self._post_order(self.root)
+        if self._root:
+            return self._post_order(self._root)
         else:
             return []
 
@@ -103,10 +103,10 @@ class BinarySearchTree(object):
     def insert(self, key, value):
         """Inserts a new value keeping the tree sorted."""
         new_node = self._Node(key, value)
-        if self.root:
-            self._insert_child(self.root, new_node)            
+        if self._root:
+            self._insert_child(self._root, new_node)
         else:
-            self.root = new_node
+            self._root = new_node
 
     def _insert_child(self, parent, child):
         """Insert a child node under a parent node recursively."""
@@ -120,6 +120,31 @@ class BinarySearchTree(object):
                 self._insert_child(parent.right, child)
             else:
                 parent.right = child
+
+    def is_balanced(self):
+        """Tests whether the tree is balanced or not."""
+        if self._root:
+            try:
+                self._get_node_height(self._root)
+            except IndexError:
+                return False
+        return True
+
+    def _get_node_height(self, node):
+        left_height = 0
+        right_height = 0
+
+        if node.left:
+            left_height += 1
+            left_height += self._get_node_height(node.left)
+        if node.right:
+            right_height += 1
+            right_height += self._get_node_height(node.right)
+
+        height = abs(left_height - right_height)
+        if height > 1:
+            raise IndexError('Node %s is unbalanced' % node.key)
+        return height
 
     class _Node(object):
         def __init__(self, key, value):
@@ -137,16 +162,16 @@ class BinarySearchTreeTests(unittest.TestCase):
             self.tree.insert(key, key**2)
 
     def test_pre_order(self):
-        self.assertEqual(self.tree.pre_order(), [10, 6, 5, 7, 8, 9, 11, 20, 16])
+        self.assertEqual([10, 6, 5, 7, 8, 9, 11, 20, 16], self.tree.pre_order())
 
     def test_in_order(self):
-        self.assertEqual(self.tree.in_order(), [5, 6, 7, 8, 9, 10, 11, 16, 20])
+        self.assertEqual([5, 6, 7, 8, 9, 10, 11, 16, 20], self.tree.in_order())
 
     def test_post_order(self):
-        self.assertEqual(self.tree.post_order(), [5, 9, 8, 7, 6, 16, 20, 11, 10])
+        self.assertEqual([5, 9, 8, 7, 6, 16, 20, 11, 10], self.tree.post_order())
 
     def test_get_existing_item(self):
-        self.assertEqual(self.tree[7], 49)
+        self.assertEqual(49, self.tree[7])
 
     def test_get_nonexisting_item(self):
         self.assertRaises(KeyError, self.tree.__getitem__, 50)
@@ -158,6 +183,9 @@ class BinarySearchTreeTests(unittest.TestCase):
     def test_dot_syntax(self):
         output = 'digraph G { graph [ordering="out"]; 10 -> 6; 6 -> 5; 6 -> 7; 7 -> 8; 8 -> 9; 10 -> 11; 11 -> 20; 20 -> 16; }'
         self.assertTrue(output, self.tree.dot_syntax())
+
+    def test_is_balanced(self):
+        self.assertFalse(self.tree.is_balanced())
 
 if __name__ == '__main__':
     unittest.main()

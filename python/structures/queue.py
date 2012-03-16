@@ -60,17 +60,17 @@ class QueueTests(unittest.TestCase):
         self.queue.enqueue('a')
         self.queue.enqueue('b')
         self.queue.enqueue('c')
-        self.assertEqual(len(self.queue), 3)
+        self.assertEqual(3, len(self.queue))
 
     def test_dequeue(self):
         self.queue.enqueue('a')
         self.queue.enqueue('b')
         self.queue.enqueue('c')
-        self.assertEqual(self.queue.dequeue(), 'a')
-        self.assertEqual(self.queue.dequeue(), 'b')
+        self.assertEqual('a', self.queue.dequeue())
+        self.assertEqual('b', self.queue.dequeue())
 
     def test_dequeue_empty(self):
-        self.assertEqual(len(self.queue), 0)
+        self.assertEqual(0, len(self.queue))
         self.assertRaises(IndexError, self.queue.dequeue)
 
 

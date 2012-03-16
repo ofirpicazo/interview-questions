@@ -55,17 +55,17 @@ class StackTests(unittest.TestCase):
         self.stack.push('a')
         self.stack.push('b')
         self.stack.push('c')
-        self.assertEqual(len(self.stack), 3)
+        self.assertEqual(3, len(self.stack))
 
     def test_pop(self):
         self.stack.push('a')
         self.stack.push('b')
         self.stack.push('c')
-        self.assertEqual(self.stack.pop(), 'c')
-        self.assertEqual(self.stack.pop(), 'b')
+        self.assertEqual('c', self.stack.pop())
+        self.assertEqual('b', self.stack.pop())
 
     def test_pop_empty(self):
-        self.assertEqual(len(self.stack), 0)
+        self.assertEqual(0, len(self.stack))
         self.assertRaises(IndexError, self.stack.pop)
 
 
