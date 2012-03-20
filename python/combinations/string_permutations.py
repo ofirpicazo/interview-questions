@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 """
 Returns all permutations of a given string.
@@ -7,7 +6,6 @@ Returns all permutations of a given string.
 @date: March 2012
 """
 
-import unittest
 
 def get_permutations(input_string):
     permutations = []
@@ -29,14 +27,3 @@ def get_permutations(input_string):
                 i += 1
 
     return permutations
-
-
-class GetPermutationsTest(unittest.TestCase):
-    def test_get_permutations(self):
-        target_string = 'abc'
-        expected_permutations = ['cba', 'bca', 'bac', 'cab', 'acb', 'abc']
-        self.assertEquals(expected_permutations, get_permutations(target_string))
-
-
-if __name__ == '__main__':
-    unittest.main()
