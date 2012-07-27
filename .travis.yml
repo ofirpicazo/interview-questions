@@ -3,6 +3,6 @@ python:
   - 2.7
 before_script:
   - cd python
-  - PYTHONPATH=$PYTHONPATH:.
+  - export PYTHONPATH=$PYTHONPATH:`pwd`
 script: nosetests
 
